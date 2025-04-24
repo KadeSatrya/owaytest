@@ -38,14 +38,17 @@ public class EmailTest {
         loginPage.enterEmail("testway04@gmail.com");
         loginPage.enterPassword("Harrymeow123");
         emailPage.waitUntilLoaded();
-        Assert.assertEquals(emailPage.getEmailCount(), 5);
-
-        emailPage.deleteSingleEmail();
+        emailPage.filterByUnread();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        Assert.assertEquals(emailPage.getEmailCount(), 4);
+        Integer emailCountBeforeDeletion = emailPage.getEmailCount();
+        String firstUnreadEmailSubject = emailPage.getFirstUnreadEmailSubject();
+        emailPage.deleteSingleEmail();
+        Assert.assertEquals(emailPage.getEmailCount(), emailCountBeforeDeletion-1);
+        // Note: this assumes that there are no emails with the same subject
+        Assert.assertNotEquals(emailPage.getFirstUnreadEmailSubject(), firstUnreadEmailSubject);
     }
 }

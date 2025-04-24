@@ -1,6 +1,5 @@
 package periplus;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -58,7 +57,6 @@ public class CartTest {
         bookPage.waitUntilLoaded();
         bookPage.addToCart();
         bookPage.closeModal();
-        System.out.println(this.driver.findElement(By.id("cart_total")).getText());
         Assert.assertEquals(bookPage.getCartCount(), 1);
     }
 }
