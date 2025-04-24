@@ -1,5 +1,6 @@
 package periplus;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -7,15 +8,14 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import periplus.page.BookPage;
-import periplus.page.LandingPage;
-import periplus.page.LoginPage;
-import periplus.page.SearchResultPage;
+import periplus.page.*;
+
 import java.time.Duration;
 
 public class CartTest {
     private WebDriver driver;
     private WebDriverWait wait;
+
     @BeforeTest
     public void setUp() {
         this.driver = new ChromeDriver();
@@ -24,6 +24,10 @@ public class CartTest {
 
     @AfterTest
     public void cleanUp() {
+        CartPage cartPage = new CartPage(this.driver, this.wait);
+        this.driver.get("https://www.periplus.com/checkout/cart");
+        cartPage.waitUntilLoaded();
+        cartPage.deleteItem();
         this.driver.quit();
     }
 
@@ -43,6 +47,7 @@ public class CartTest {
         landingPage.goToLandingPage();
         landingPage.waitUntilLoaded();
         Assert.assertTrue(landingPage.verifyLoggedIn("Test"));
+        Assert.assertEquals(bookPage.getCartCount(), 0);
 
         // Search Product
         landingPage.searchBook("Kalkulus");
@@ -52,6 +57,8 @@ public class CartTest {
         // Add product to cart
         bookPage.waitUntilLoaded();
         bookPage.addToCart();
+        bookPage.closeModal();
+        System.out.println(this.driver.findElement(By.id("cart_total")).getText());
         Assert.assertEquals(bookPage.getCartCount(), 1);
     }
 }

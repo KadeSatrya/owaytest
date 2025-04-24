@@ -14,9 +14,7 @@ public class LandingPage extends Page {
         return this.driver.findElement(By.id("nav-signin-text")).getText().equals(username);
     }
 
-    public void goToLandingPage() {
-        driver.get("http://www.periplus.com");
-    }
+
 
     public void goToLogin(){
         driver.findElement(By.id("nav-signin-text")).click();

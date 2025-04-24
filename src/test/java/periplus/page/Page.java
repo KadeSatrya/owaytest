@@ -14,6 +14,10 @@ public class Page {
         this.wait = wait;
     }
 
+    public void goToLandingPage() {
+        driver.get("http://www.periplus.com");
+    }
+
     public void waitUntilLoaded(){
         this.wait.until(d -> this.driver.findElement(By.className("search-bar")).isDisplayed());
     }
