@@ -6,13 +6,21 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BookPage extends Page {
-    public BookPage(WebDriver driver, WebDriverWait wait) {
-        super(driver, wait);
+    public BookPage(WebDriver driver, WebDriverWait wait, String isbn) {
+        super(driver, wait, "https://www.periplus.com/p/" + isbn);
     }
 
-    public void addToCart(){
-        waitForPreloader();
+    public void addProductToCart(Integer quantity) {
+        changeQuantity(quantity);
         this.driver.findElement(By.className("btn-add-to-cart")).click();
+        closeModal();
+    }
+
+    private void changeQuantity(Integer quantity) {
+        while(quantity > 1){
+            this.driver.findElement(By.className("btn-product-plus")).click();
+            quantity--;
+        }
     }
 
     public void closeModal(){
